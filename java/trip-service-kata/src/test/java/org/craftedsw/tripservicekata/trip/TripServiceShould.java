@@ -9,20 +9,20 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class TripServiceShould {
 
+    public static final User ANONYMOUS_USER = null;
+    public static final User NORMAL_USER = new User();
+    public static final User FRIEND = new User();
+
     @Test(expected = UserNotLoggedInException.class)
     public void thrown_an_exception_if_user_not_logged_in() {
-        User user = new User();
-        User loggedUser = null;
-        TripService tripServiceTest = new TripServiceTest(loggedUser);
-        tripServiceTest.getTripsByUser(user);
+        TripService tripServiceTest = new TripServiceTest(ANONYMOUS_USER);
+        tripServiceTest.getTripsByUser(NORMAL_USER);
     }
 
     @Test
     public void return_empty_list_when_users_are_not_friends() {
-        User user = new User();
-        TripService tripServiceTest = new TripServiceTest(user);
-        User friend = new User();
-        assertThat(tripServiceTest.getTripsByUser(user).size(),is(0));
+        TripService tripServiceTest = new TripServiceTest(NORMAL_USER);
+        assertThat(tripServiceTest.getTripsByUser(FRIEND).size(),is(0));
     }
 
     private class TripServiceTest extends TripService {
